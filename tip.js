@@ -1,8 +1,20 @@
+const web3 = new Web3(Web3.givenProvider)
 const form = document.querySelector('form')
 
 const send = async function(amount) {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-    console.log(accounts)
+    const wei = web3.utils.toWei(amount, 'ether')
+
+    if (accounts.length > 0) {
+        window.ethereum.request({ 
+            method: 'eth_sendTransaction',
+            params: [{
+                from: accounts[0],
+                to: '0xC4E6438f5D466662D795592f32B79e733E9833aF',
+                value: web3.utils.toHex(wei)
+            }]
+         })
+    }
 }
 
 if (window.ethereum) {
